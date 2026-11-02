@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carnet de résolution — Pompes hydrauliques — 1re MSPC</title>
+<style>
+:root{
+ --ink:#1E2761;--ink-soft:#4A5485;--rule:#C7CCE0;--rule-soft:#E4E7F2;
+ --paper:#FDFDFB;--paper-panel:#FFFFFF;--accent:#C9871F;--accent-ink:#5C3E0C;
+ --ok-bg:#EEF4EC;--ok-rule:#9FBF95;--grid:rgba(30,39,97,.055);--danger:#A5402F;
+ color-scheme:light
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#E7E9F7;--ink-soft:#AEB4D6;--rule:#3C4470;--rule-soft:#2A2F52;--paper:#15182C;--paper-panel:#1C2040;--accent:#E8A33D;--accent-ink:#2A1C06;--ok-bg:#1C2B1E;--ok-rule:#4C7A49;--grid:rgba(220,224,255,.045);color-scheme:dark}}
+:root[data-theme="dark"]{--ink:#E7E9F7;--ink-soft:#AEB4D6;--rule:#3C4470;--rule-soft:#2A2F52;--paper:#15182C;--paper-panel:#1C2040;--accent:#E8A33D;--accent-ink:#2A1C06;--ok-bg:#1C2B1E;--ok-rule:#4C7A49;--grid:rgba(220,224,255,.045);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:repeating-linear-gradient(0deg,var(--grid) 0,var(--grid) 1px,transparent 1px,transparent 32px),repeating-linear-gradient(90deg,var(--grid) 0,var(--grid) 1px,transparent 1px,transparent 32px),var(--paper);color:var(--ink);font:15.5px/1.55 "Segoe UI",system-ui,-apple-system,Arial,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--ink);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px 90px}
+.toolbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.toolbar-inner{max-width:900px;margin:auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toolbar-title{font-size:13px;color:var(--ink-soft)}
+.toolbar-actions{display:flex;gap:9px;flex-wrap:wrap}
+button{font:13.5px inherit;cursor:pointer;border-radius:3px;padding:9px 15px;border:1.4px solid var(--ink);background:var(--ink);color:var(--paper)}
+button.secondary{background:transparent;color:var(--ink);border-color:var(--rule)}
+button:hover{opacity:.86}
+.cartouche{margin-top:22px;border:1.6px solid var(--ink)}
+.cartouche-top{padding:16px 18px 14px;border-bottom:1.6px solid var(--ink)}
+.eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--accent-ink);background:var(--accent);display:inline-block;padding:3px 8px;font-weight:700}
+.cartouche-top h1{font-size:25px;margin-top:8px}
+.sub{color:var(--ink-soft);font-style:italic;font-size:14.5px;margin-top:4px}
+.cartouche-fields{display:grid;grid-template-columns:repeat(4,1fr)}
+.f{border-right:1px solid var(--rule);padding:9px 12px}.f:last-child{border:0}
+.f label{display:block;font-size:10.5px;letter-spacing:.09em;color:var(--ink-soft);margin-bottom:4px}
+.f input{width:100%;border:0;border-bottom:1px solid var(--rule-soft);background:transparent;color:var(--ink);font:14px inherit;padding:3px 0}
+.intro{margin:22px 0 16px;color:var(--ink-soft)}
+.obj-box{background:var(--rule-soft);border-left:4px solid var(--ink);padding:12px 16px;margin-bottom:20px;font-size:14.5px}
+.source-note{border:1px solid var(--rule);padding:12px 15px;margin:14px 0 22px;background:var(--paper-panel);font-size:13px}
+.source-note strong{color:var(--ink)}
+.source-note a{color:var(--ink);overflow-wrap:anywhere}
+.exercise{margin:30px 0;border:1px solid var(--rule);background:var(--paper-panel);break-inside:avoid-page}
+.exercise-head{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.ex-num{font:700 22px Georgia,serif;color:var(--accent-ink);background:var(--accent);width:40px;height:40px;min-width:40px;display:flex;align-items:center;justify-content:center}
+.ex-title{flex:1}.ex-title h2{font-size:19px}.ex-meta{font-size:12px;color:var(--ink-soft);font-style:italic}
+.question{padding:15px 18px}.question+.question{border-top:1px dashed var(--rule)}
+.q-text{font-size:14.5px;margin:4px 0 10px;display:flex;gap:8px}.q-index{font-weight:700}
+.field-label{font-size:11px;letter-spacing:.08em;color:var(--ink-soft);margin:10px 0 4px}
+.calc-area{min-height:64px;border:1px solid var(--rule);background:var(--paper);padding:9px 11px;font:14px/1.5 "SFMono-Regular",Consolas,monospace;white-space:pre-wrap}
+.calc-area:focus{outline:none;border-color:var(--ink-soft)}
+.calc-area:empty:before{content:attr(data-placeholder);color:var(--ink-soft);opacity:.58}
+.result-row{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}
+.result-input{border:1.4px solid var(--accent);background:var(--paper);padding:8px 10px;font:14px inherit;color:var(--ink);min-width:190px;flex:1}
+.schema-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+.schema-table th,.schema-table td{border:1px solid var(--rule);padding:8px;text-align:left}
+.schema-table th{background:var(--ink);color:var(--paper);font-weight:600;text-align:center}
+.schema-table input{width:100%;min-width:0;border:1px solid var(--rule);padding:6px;background:var(--paper);color:var(--ink);font:inherit}
+.data-box{background:var(--paper);border:1px solid var(--rule);padding:11px 13px;margin:10px 0;font-size:14px}
+.data-box ul{margin:5px 0 0;padding-left:20px}
+.bilan{margin:32px 0;border:1px solid var(--ok-rule);background:var(--ok-bg);padding:16px 18px}
+.bilan h2{font-size:18px;margin-bottom:8px}
+.bilan .calc-area{min-height:85px;background:var(--paper-panel)}
+.footer-note{margin-top:25px;padding-top:14px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-soft)}
+.progress b{color:var(--ink)}
+@media(max-width:600px){.cartouche-fields{grid-template-columns:1fr 1fr}.f:nth-child(2){border-right:0}.f:nth-child(-n+2){border-bottom:1px solid var(--rule)}.wrap{padding:18px 12px 60px}.exercise-head{padding:12px}.question{padding:13px}.schema-table{font-size:12px}}
+@media print{
+ @page{margin:12mm}
+ body{background:white!important;color:#111;font-size:12pt}
+ .no-print{display:none!important}.wrap{padding:0;max-width:none}
+ .cartouche,.exercise,.bilan{break-inside:avoid-page}
+ .exercise{border-color:#999;margin:18px 0}
+ .calc-area{background:white;border-color:#999;color:#111;min-height:55px}
+ .result-input,.schema-table input,.f input{color:#111;background:white;border-color:#777}
+ .source-note a{color:#111;text-decoration:none}
+ .exercise:not(:first-of-type){break-before:auto}
+}
+</style>
+</head>
+<body>
+<div class="toolbar no-print"><div class="toolbar-inner">
+ <div class="toolbar-title">Carnet de résolution — <span class="progress" id="progress"><b>0</b>/26 champs complétés</span></div>
+ <div class="toolbar-actions"><button class="secondary" id="resetBtn" type="button">Réinitialiser</button><button id="printBtn" type="button">🖨️ Imprimer / Enregistrer en PDF</button></div>
+</div></div>
+<div class="wrap">
+ <header class="cartouche">
+  <div class="cartouche-top"><span class="eyebrow">TD — BAC PRO MSPC · HYDRAULIQUE</span>
+   <h1>Étude des pompes hydrauliques</h1><div class="sub">Carnet de résolution interactif — Première Bac Pro MSPC</div>
+  </div>
+  <div class="cartouche-fields">
+   <div class="f"><label for="fNom">NOM ET PRÉNOM</label><input id="fNom" data-meta="1" type="text" autocomplete="off"></div>
+   <div class="f"><label for="fClasse">CLASSE</label><input id="fClasse" data-meta="1" type="text" value="1re Bac Pro MSPC"></div>
+   <div class="f"><label for="fDate">DATE</label><input id="fDate" data-meta="1" type="date"></div>
+   <div class="f"><label>SUPPORT</label><input type="text" value="TD Pompes hydrauliques" readonly></div>
+  </div>
+ </header>
+ <p class="intro">Tu es technicien de maintenance. À partir des dossiers techniques mis à ta disposition, tu dois analyser le fonctionnement d'une motopompe, exploiter ses caractéristiques et vérifier le choix d'une pompe de remplacement.</p>
+ <div class="obj-box"><strong>Objectifs pédagogiques :</strong> identifier la fonction d'une pompe dans une chaîne d'énergie, repérer les zones d'aspiration et de refoulement, exploiter des caractéristiques constructeur, calculer un débit et justifier le choix d'une pompe.</div>
+ <div class="source-note">
+  <strong>Consignes et documents :</strong> les schémas et tableaux ne sont volontairement pas intégrés dans ce fichier afin de le garder léger. Pour chaque exercice, récupère les annexes indiquées dans le dossier technique Éduscol correspondant. Les exercices ci-dessous sont reformulés et adaptés au niveau première ; ils ne reproduisent pas intégralement les sujets d'examen.
+ </div>
+
+ <section class="exercise">
+  <div class="exercise-head"><div class="ex-num">1</div><div class="ex-title"><h2>Fonction globale et chaîne d'énergie d'une motopompe</h2><div class="ex-meta">Niveau 1 — Identifier le rôle de la pompe dans le système</div></div></div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">1.1</span><span>À partir de l'actigramme A-0 du banc de pompes, compléter les éléments suivants.</span></div>
+   <div class="data-box"><strong>Annexe à consulter :</strong> schéma fonctionnel du banc de pompes et actigramme A-0.</div>
+   <table class="schema-table"><thead><tr><th>Élément à identifier</th><th>Réponse</th></tr></thead><tbody>
+    <tr><td>Fonction principale assurée par la motopompe</td><td><input data-key="e1-fonction" placeholder="Fonction..."></td></tr>
+    <tr><td>Énergie reçue par le système</td><td><input data-key="e1-entree" placeholder="Énergie..."></td></tr>
+    <tr><td>Grandeurs caractéristiques du flux en sortie</td><td><input data-key="e1-sortie" placeholder="Débit / pression..."></td></tr>
+    <tr><td>Fluide utilisé</td><td><input data-key="e1-fluide" placeholder="Fluide..."></td></tr>
+   </tbody></table>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">1.2</span><span>Remettre dans l'ordre les composants de la chaîne d'énergie qui permettent d'entraîner la pompe : contacteur, moteur électrique, accouplement, pompe.</span></div>
+   <table class="schema-table"><thead><tr><th>Ordre</th><th>Composant</th><th>Rôle dans la chaîne</th></tr></thead><tbody>
+    <tr><td>1</td><td><input data-key="e1-ordre1"></td><td><input data-key="e1-role1"></td></tr>
+    <tr><td>2</td><td><input data-key="e1-ordre2"></td><td><input data-key="e1-role2"></td></tr>
+    <tr><td>3</td><td><input data-key="e1-ordre3"></td><td><input data-key="e1-role3"></td></tr>
+    <tr><td>4</td><td><input data-key="e1-ordre4"></td><td><input data-key="e1-role4"></td></tr>
+   </tbody></table>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">1.3</span><span>Expliquer pourquoi une pompe seule ne peut pas assurer le fonctionnement du banc : quels composants sont indispensables à son entraînement ?</span></div>
+   <div class="field-label">RÉPONSE JUSTIFIÉE</div><div class="calc-area" contenteditable="true" data-key="e1-q13" data-placeholder="Rédige une réponse en faisant le lien entre énergie électrique et énergie hydraulique..."></div>
+  </div>
+  <div class="source-note"><strong>Sujet de référence :</strong> Éduscol STI — <em>039 - Bac Pro MSPC - Épreuve E2 - Banc de pompes - Toulouse</em>, E2a, question Q1 (étude fonctionnelle).<br><strong>Annexes à fournir :</strong> Dossier technique et ressources, pages DTR 2/21 à 5/21 (schéma fonctionnel / chaîne d'énergie).<br><a href="https://sti.eduscol.education.fr/ressources_pedagogiques/039-bac-pro-mspc-epreuve-e2-banc-de-pompes-toulouse" target="_blank" rel="noopener">Accéder au sujet sur Éduscol STI</a> · <a href="https://sti.eduscol.education.fr/sites/eduscol.education.fr.sti/files/ressources/pedagogiques/16572/16572-dtr-banc-de-pompe-academie-de-toulouse.pdf" target="_blank" rel="noopener">Dossier technique PDF</a></div>
+ </section>
+
+ <section class="exercise">
+  <div class="exercise-head"><div class="ex-num">2</div><div class="ex-title"><h2>Repérage de l'aspiration, du refoulement et des pressions</h2><div class="ex-meta">Niveau 2 — Lire une vue en coupe et expliquer la circulation du fluide</div></div></div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">2.1</span><span>À l'aide de la vue en coupe de la pompe fournie en annexe, repérer les zones suivantes et indiquer leur fonction.</span></div>
+   <div class="data-box"><strong>Annexe à consulter :</strong> vue en coupe de la motopompe et schéma des canaux internes de circulation du fluide.</div>
+   <table class="schema-table"><thead><tr><th>Repère à localiser</th><th>Zone / côté de la pompe</th><th>Fonction</th></tr></thead><tbody>
+    <tr><td>Aspiration</td><td><input data-key="e2-asp-zone"></td><td><input data-key="e2-asp-role"></td></tr>
+    <tr><td>Refoulement</td><td><input data-key="e2-ref-zone"></td><td><input data-key="e2-ref-role"></td></tr>
+    <tr><td>Basse pression</td><td><input data-key="e2-bp-zone"></td><td><input data-key="e2-bp-role"></td></tr>
+    <tr><td>Haute pression</td><td><input data-key="e2-hp-zone"></td><td><input data-key="e2-hp-role"></td></tr>
+   </tbody></table>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">2.2</span><span>Décrire le cheminement du fluide dans la pompe depuis son arrivée jusqu'à sa sortie. Utiliser les termes aspiration, refoulement, basse pression et haute pression.</span></div>
+   <div class="field-label">DESCRIPTION DU FONCTIONNEMENT</div><div class="calc-area" contenteditable="true" data-key="e2-q22" data-placeholder="Le fluide entre par... puis..."></div>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">2.3</span><span>Le constructeur indique que le fluide pompé participe à la lubrification et au refroidissement des paliers. Expliquer l'intérêt de cette solution constructive.</span></div>
+   <div class="field-label">JUSTIFICATION TECHNIQUE</div><div class="calc-area" contenteditable="true" data-key="e2-q23" data-placeholder="Précise le rôle de la circulation du fluide sur les paliers..."></div>
+  </div>
+  <div class="source-note"><strong>Sujet de référence :</strong> Éduscol STI — <em>039 - Bac Pro MSPC - Épreuve E2 - Banc de pompes - Toulouse</em>, E2a, question Q5 (étude du guidage en rotation et circulation du fluide).<br><strong>Annexes à fournir :</strong> Dossier technique, pages DTR 7/21 à 9/21 ; vue en coupe et indications des canaux internes. La question Q5 du dossier réponses renvoie aux pages DTR 7/22 à 9/22 dans la pagination du sujet.<br><a href="https://sti.eduscol.education.fr/ressources_pedagogiques/039-bac-pro-mspc-epreuve-e2-banc-de-pompes-toulouse" target="_blank" rel="noopener">Accéder au sujet sur Éduscol STI</a> · <a href="https://sti.eduscol.education.fr/sites/eduscol.education.fr.sti/files/ressources/pedagogiques/16572/16572-dtr-banc-de-pompe-academie-de-toulouse.pdf" target="_blank" rel="noopener">Dossier technique PDF</a></div>
+ </section>
+
+ <section class="exercise">
+  <div class="exercise-head"><div class="ex-num">3</div><div class="ex-title"><h2>Exploitation des caractéristiques et calcul du débit</h2><div class="ex-meta">Niveau 3 — Exploiter une caractéristique constructeur et effectuer des conversions</div></div></div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">3.1</span><span>Relever dans le dossier technique le débit maximal de l'ancienne motopompe à 3 000 tr/min, puis la vitesse de rotation du moteur retenue pour l'installation.</span></div>
+   <div class="result-row"><span class="field-label">DÉBIT MAXIMAL À 3 000 tr/min :</span><input class="result-input" data-key="e3-qmax" placeholder="Q₁ = … L/min"></div>
+   <div class="result-row"><span class="field-label">VITESSE UTILISÉE :</span><input class="result-input" data-key="e3-n2" placeholder="n₂ = … tr/min"></div>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">3.2</span><span>En considérant que le débit est proportionnel à la vitesse de rotation, calculer le débit maximal de la pompe à la vitesse d'utilisation. Présenter la formule, les valeurs numériques et le résultat avec son unité.</span></div>
+   <div class="data-box"><strong>Relation à utiliser :</strong> Q₂ = Q₁ × n₂ / n₁</div>
+   <div class="field-label">DÉTAIL DU CALCUL</div><div class="calc-area" contenteditable="true" data-key="e3-calc" data-placeholder="Écris la formule, remplace les valeurs et effectue le calcul..."></div>
+   <div class="result-row"><span class="field-label">DÉBIT À LA VITESSE D'UTILISATION :</span><input class="result-input" data-key="e3-qresult" placeholder="Q₂ = … L/min"></div>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">3.3</span><span>Convertir le débit obtenu en m³/h. Détailler les étapes de conversion.</span></div>
+   <div class="field-label">CONVERSION</div><div class="calc-area" contenteditable="true" data-key="e3-convcalc" data-placeholder="1 L = ... m³ ; 1 min = ... h ; calcul..."></div>
+   <div class="result-row"><span class="field-label">DÉBIT CONVERTI :</span><input class="result-input" data-key="e3-convres" placeholder="Q = … m³/h"></div>
+  </div>
+  <div class="source-note"><strong>Sujet de référence :</strong> Éduscol STI — <em>039 - Bac Pro MSPC - Épreuve E2 - Banc de pompes - Toulouse</em>, E2a, question Q6-2 à Q6-4 (compatibilité et calcul du débit de l'ancienne motopompe).<br><strong>Annexes à fournir :</strong> Dossier technique, page présentant les caractéristiques de l'ancienne pompe (débit maximal à 3 000 tr/min) et plaque signalétique moteur ; dossier réponses E2a, DQR 9/11. Les valeurs numériques sont à relever dans les annexes, elles ne sont pas recopiées ici.<br><a href="https://sti.eduscol.education.fr/ressources_pedagogiques/039-bac-pro-mspc-epreuve-e2-banc-de-pompes-toulouse" target="_blank" rel="noopener">Accéder au sujet sur Éduscol STI</a> · <a href="https://sti.eduscol.education.fr/sites/eduscol.education.fr.sti/files/ressources/pedagogiques/16572/16572-dtr-banc-de-pompe-academie-de-toulouse.pdf" target="_blank" rel="noopener">Dossier technique PDF</a></div>
+ </section>
+
+ <section class="exercise">
+  <div class="exercise-head"><div class="ex-num">4</div><div class="ex-title"><h2>Influence de la vitesse de rotation sur le débit</h2><div class="ex-meta">Niveau 4 — Exploiter des courbes caractéristiques et interpréter une variation de débit</div></div></div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">4.1</span><span>Le banc de pompes est équipé d'un variateur de vitesse. À l'aide de la courbe « Débit en m³/h / Position du potentiomètre », déterminer la position du potentiomètre permettant d'obtenir un débit moyen de 8 m³/h. Faire apparaître le tracé de lecture sur l'annexe papier.</span></div>
+   <div class="data-box"><strong>Annexe à consulter :</strong> courbe du débit en fonction de la position du potentiomètre, fournie dans le dossier réponses E2a.</div>
+   <div class="result-row"><span class="field-label">POSITION DU POTENTIOMÈTRE :</span><input class="result-input" data-key="e4-pot" placeholder="Position = …"></div>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">4.2</span><span>À partir de la position trouvée à la question précédente, relever sur la courbe « Vitesse de rotation / Position du potentiomètre » la vitesse moyenne du moteur correspondante. Préciser l'unité.</span></div>
+   <div class="data-box"><strong>Annexe à consulter :</strong> courbe de la vitesse de rotation du moteur en fonction de la position du potentiomètre.</div>
+   <div class="result-row"><span class="field-label">VITESSE MOYENNE DU MOTEUR :</span><input class="result-input" data-key="e4-vitesse" placeholder="n = … tr/min"></div>
+   <div class="field-label">EXPLICATION DE LA LECTURE GRAPHIQUE</div><div class="calc-area" contenteditable="true" data-key="e4-lecture" data-placeholder="Décris les étapes de lecture sur les deux courbes..."></div>
+  </div>
+  <div class="question">
+   <div class="q-text"><span class="q-index">4.3</span><span>Expliquer le lien entre la vitesse de rotation du moteur et le débit fourni par la pompe. Quel est l'intérêt de pouvoir faire varier la vitesse pendant l'utilisation du banc de pompes ?</span></div>
+   <div class="field-label">ANALYSE ET JUSTIFICATION</div><div class="calc-area" contenteditable="true" data-key="e4-conclusion" data-placeholder="Lorsque la vitesse de rotation augmente... L'utilisation du variateur permet..."></div>
+  </div>
+  <div class="source-note"><strong>Sujet de référence :</strong> Éduscol STI — <em>000 - Bac Pro MSPC - Épreuve E2 - Banc de pompes - Créteil</em>, E2a, question Q5 (maintenance améliorative : variation de vitesse et influence sur le débit).<br><strong>Annexes à fournir :</strong> dossier réponses E2a, pages DQR 13/14 et 14/14 : courbe vitesse de rotation / position du potentiomètre et courbe débit / position du potentiomètre. Prévoir les deux pages en impression pour que les élèves puissent tracer leur lecture graphique.<br><a href="https://sti.eduscol.education.fr/ressources_pedagogiques/000-bac-pro-mspc-epreuve-e2-banc-de-pompes-creteil" target="_blank" rel="noopener">Accéder au sujet sur Éduscol STI</a> · <a href="https://sti.eduscol.education.fr/sites/eduscol.education.fr.sti/files/ressources/pedagogiques/16308/16308-e2a-banc-de-pompes-academie-creteil-dqr.pdf" target="_blank" rel="noopener">Dossier réponses E2a PDF</a></div>
+ </section>
+
+ <section class="bilan"><h2>Bilan personnel</h2>
+  <div class="field-label">Quelles notions maîtrises-tu ? Quelles notions dois-tu encore travailler : rôle d'une pompe, aspiration/refoulement, calcul de débit, lecture de données constructeur ?</div>
+  <div class="calc-area" contenteditable="true" data-key="bilan" data-placeholder="Rédige ton bilan..."></div>
+ </section>
+ <div class="footer-note no-print"><strong>Pour transmettre ton travail :</strong> clique sur « Imprimer / Enregistrer en PDF », sélectionne « Enregistrer au format PDF », puis dépose ou envoie le fichier obtenu selon les consignes de ton professeur. Les réponses saisies sont conservées automatiquement dans le navigateur de cet appareil.</div>
+</div>
+<script>
+(function(){
+ const PREFIX='td_pompes_mspc_v1_';
+ const fields=()=>document.querySelectorAll('[data-key]');
+ const value=el=>el.hasAttribute('contenteditable')?el.innerText:el.value;
+ const assign=(el,v)=>{if(el.hasAttribute('contenteditable'))el.innerText=v;else el.value=v};
+ function persist(el){try{localStorage.setItem(PREFIX+el.dataset.key,value(el))}catch(e){}}
+ function restore(el){try{const v=localStorage.getItem(PREFIX+el.dataset.key);if(v!==null)assign(el,v)}catch(e){}}
+ function metaSave(el){try{localStorage.setItem(PREFIX+'meta_'+el.id,el.value)}catch(e){}}
+ function update(){let n=0;fields().forEach(el=>{if(value(el).trim())n++});const p=document.getElementById('progress');p.innerHTML='<b>'+n+'</b>/'+fields().length+' champs complétés'}
+ document.addEventListener('DOMContentLoaded',()=>{
+  fields().forEach(el=>{restore(el);el.addEventListener('input',()=>{persist(el);update()});el.addEventListener('blur',()=>persist(el))});
+  document.querySelectorAll('[data-meta]').forEach(el=>{try{const v=localStorage.getItem(PREFIX+'meta_'+el.id);if(v!==null)el.value=v}catch(e){};el.addEventListener('input',()=>metaSave(el))});
+  update();
+  document.getElementById('printBtn').addEventListener('click',()=>window.print());
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+   if(!confirm('Effacer toutes les réponses enregistrées dans ce carnet ?'))return;
+   fields().forEach(el=>{assign(el,'');try{localStorage.removeItem(PREFIX+el.dataset.key)}catch(e){}});
+   document.querySelectorAll('[data-meta]').forEach(el=>{el.value='';try{localStorage.removeItem(PREFIX+'meta_'+el.id)}catch(e){}});
+   update();
+  });
+ });
+})();
+</script>
+</body></html>
